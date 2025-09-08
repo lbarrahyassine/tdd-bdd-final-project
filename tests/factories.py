@@ -20,8 +20,8 @@ Test Factory to make fake objects for testing
 import factory
 from factory.fuzzy import FuzzyChoice, FuzzyDecimal
 from service.models import Product, Category
-
-
+from faker import Faker
+fake = Faker()
 class ProductFactory(factory.Factory):
     """Creates fake products for testing"""
 
@@ -32,3 +32,25 @@ class ProductFactory(factory.Factory):
 
     id = factory.Sequence(lambda n: n)
    ## Add code to create Fake Products 
+
+    name = fuzzy.FuzzyChoice([
+        "Hat", "Pants", "Shirt", "Apple", "Banana",
+        "Pots", "Towels", "Ford", "Chevy", "Hammer", "Wrench"
+    ])
+    
+
+    description = factory.LazyFunction(lambda: fake.text())
+    
+    price = fuzzy.FuzzyDecimal(0.5, 2000.0, 2)
+    
+    available = fuzzy.FuzzyChoice([True, False])
+    
+    category = fuzzy.FuzzyChoice(    
+            choices=[
+            Category.UNKNOWN,
+            Category.CLOTHS,
+            Category.FOOD,
+            Category.HOUSEWARES,
+            Category.AUTOMOTIVE,
+            Category.TOOLS,
+        ])
